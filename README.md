@@ -10,7 +10,9 @@ Este repositorio contiene la base inicial del proyecto, desarrollado con tecnolo
 ---
 
 ## 🚀 Tecnologías principales
-
+- node  v22.8.0
+- yarn 4.10.3
+   
 ### **Frontend**
 
 - **React 19**
