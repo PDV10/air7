@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Image, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { keyframes } from "@emotion/react";
 
@@ -7,6 +7,7 @@ import img2 from "../../../assets/zapatillas/zapatilla-puma-2.webp";
 import img3 from "../../../assets/zapatillas/zapatilla-puma-3.webp";
 import img4 from "../../../assets/zapatillas/zapatilla-puma-4.webp";
 import img5 from "../../../assets/zapatillas/zapatillas-puma.webp";
+import { ProductCard } from "../../common/ProductCard";
 
 const marquee = keyframes`
   0% { transform: translateX(0); }
@@ -60,57 +61,14 @@ export const HomeDestacados = () => {
             w={{ base: "40%", md: "32%", lg: "180px" }}
             cursor="pointer"
           >
-            <Box
-              as={Link}
-              to={`/producto/${product.id}`}
-              borderRadius="2xl"
-              overflow="hidden"
-              position="relative"
-              height="200px"
-              bg="gray.300"
-              transition="all 0.25s ease"
-              _hover={{
-                transform: "scale(1.03)",
-                boxShadow: "0 12px 30px rgba(0,0,0,0.25)",
-              }}
-            >
-              <Image
-                bgColor="white"
-                src={product.img}
-                alt={product.name}
-                w="100%"
-                h="100%"
-                objectFit="contain"
-              />
-
-              <Box
-                position="absolute"
-                bottom="0"
-                left="0"
-                w="100%"
-                h="50px"
-                bgGradient="linear(to-b, transparent, brand.500)"
-              />
-            </Box>
-
-            <Text
-              mt={3}
-              fontWeight="semibold"
-              fontSize={{ base: "md", md: "lg" }}
-              color="gray.100"
-            >
-              {product.name}
-            </Text>
-
-            <Text
-              fontWeight="bold"
-              fontSize="2xl"
-              fontFamily="Zuume"
-              color="brand.500"
-              letterSpacing="-0.5px"
-            >
-              ${product.price.toLocaleString("es-AR")}
-            </Text>
+            <ProductCard
+              key={product.id}
+              to={`/productos/${product.id}`}
+              image={product.img}
+              imageAlt={product.name}
+              title={product.name}
+              price={product.price}
+            />
           </Flex>
         ))}
       </Flex>

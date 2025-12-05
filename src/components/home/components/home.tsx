@@ -2,7 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import { MainContainer } from "../../layout/components/MainContainer";
 import { HomeCards } from "./HomeCards";
 import { HomeDestacados } from "./HomeDestacados";
-import { Redes } from "../../common/Redes";
 
 export const Home = () => {
   return (
@@ -29,14 +28,6 @@ export const Home = () => {
           <source src="/videos/air7-home-loop.mp4" type="video/mp4" />
         </video>
       </Box>
-
-      <Flex
-        position="absolute"
-        top={{ base: 32, md: "160px" }}
-        right={{ base: 6, md: "86px" }}
-      >
-        <Redes />
-      </Flex>
 
       <MainContainer>
         <Flex flexDir="column" gap={20}>

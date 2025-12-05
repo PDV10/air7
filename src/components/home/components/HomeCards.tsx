@@ -1,9 +1,9 @@
-import { Flex, Heading, Image, Box, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Flex, Heading } from "@chakra-ui/react";
 
 import flyer05 from "../../../assets/AIRSEVEN-FLYERS-05.webp";
 import flyer07 from "../../../assets/AIRSEVEN-FLYERS-07.webp";
 import flyer09 from "../../../assets/AIRSEVEN-FLYERS-09.webp";
+import { ProductCard } from "../../common/ProductCard";
 
 const CARDS = [
   { img: flyer05, label: "Ofertas", to: "/ofertas" },
@@ -32,53 +32,16 @@ export const HomeCards = () => {
         flexWrap="wrap"
       >
         {CARDS.map((card) => (
-          <Box
+          <ProductCard
             key={card.to}
-            as={Link}
             to={card.to}
-            width="300px"
-            h="350px"
-            borderRadius="3xl"
-            overflow="hidden"
-            position="relative"
-            cursor="pointer"
-            transition="all 0.2s ease"
-            _hover={{
-              transform: "scale(1.03)",
-              boxShadow: "0 8px 30px rgba(0,0,0,0.25)",
-            }}
-          >
-            <Image
-              src={card.img}
-              alt={card.label}
-              objectFit="cover"
-              w="100%"
-              h="100%"
-            />
-
-            <Box
-              position="absolute"
-              bottom={0}
-              left={0}
-              w="100%"
-              h="80px"
-              bgGradient="linear(to-b, transparent, brand.500)"
-              display="flex"
-              alignItems="flex-end"
-              pl={6}
-              pb={3}
-            >
-              <Text
-                fontFamily="Zuume"
-                fontSize="3xl"
-                fontWeight="medium"
-                color="white"
-                letterSpacing="-0.5px"
-              >
-                {card.label}
-              </Text>
-            </Box>
-          </Box>
+            image={card.img}
+            imageAlt={card.label}
+            labelOverlay={card.label}
+            cardHeight="350px"
+            cardWidth="300px"
+            objectFit="cover"
+          />
         ))}
       </Flex>
     </Flex>
