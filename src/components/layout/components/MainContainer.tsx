@@ -6,13 +6,7 @@ export const MainContainer = ({
   ...boxProps
 }: PropsWithChildren<BoxProps>) => {
   return (
-    <Box
-      maxW="1200px"
-      mx="auto"
-      px={{ base: 4, md: 6 }}
-      py={{ base: 6, md: 8 }}
-      {...boxProps}
-    >
+    <Box w="100%" pt={{ base: 6, md: 8 }} {...boxProps}>
       {children}
     </Box>
   );

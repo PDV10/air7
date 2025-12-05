@@ -1,8 +1,8 @@
 import { Box, Flex, HStack, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { ColorModeToggle, MobileMenu, NavBar } from "./Navbar";
-import logoLight from "../../../assets/AIRSEVEN-logo-blanco.webp";
-import logoDark from "../../../assets/AIRSEVEN-logo-negro.webp";
+import logoLight from "../../../assets/logos/AIRSEVEN-logo-blanco.webp";
+import logoDark from "../../../assets/logos/AIRSEVEN-logo-negro.webp";
 import { SearchPill } from "./SearchPill";
 import { useLayout } from "../hooks/useLayout";
 

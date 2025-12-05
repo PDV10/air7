@@ -1,0 +1,74 @@
+/* ================= ZUMME ================= */
+
+@font-face {
+  font-family: "Zuume";
+  src: url("/fonts/zuume/Zuume-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zuume";
+  src: url("/fonts/zuume/Zuume-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zuume";
+  src: url("/fonts/zuume/Zuume-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zuume";
+  src: url("/fonts/zuume/Zuume-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zuume";
+  src: url("/fonts/zuume/Zuume-ExtraBold.ttf") format("truetype");
+  font-weight: 900;
+  font-style: unset;
+}
+
+/* ================= INTER ================= */
+/* ================= INTER ================= */
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}

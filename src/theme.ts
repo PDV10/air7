@@ -8,9 +8,12 @@ const config: ThemeConfig = {
 export const theme = extendTheme({
 	config,
 
+	/* ================================
+     FONTS
+  ================================= */
 	fonts: {
-		heading: `"Zumme", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
-		body: `"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
+		heading: "Zuume, system-ui, sans-serif",
+		body: "Inter, system-ui, sans-serif",
 	},
 
 	fontWeights: {
@@ -22,6 +25,9 @@ export const theme = extendTheme({
 		extrabold: 800,
 	},
 
+	/* ================================
+     PALETA DE COLORES
+  ================================= */
 	colors: {
 		brand: {
 			50: "#FFF5F0",
@@ -50,6 +56,9 @@ export const theme = extendTheme({
 		},
 	},
 
+	/* ================================
+     SEMANTIC TOKENS
+  ================================= */
 	semanticTokens: {
 		colors: {
 			surface: {
@@ -73,16 +82,19 @@ export const theme = extendTheme({
 		},
 	},
 
+	/* ================================
+     COMPONENTS BASE STYLES
+  ================================= */
 	components: {
 		Text: {
 			baseStyle: {
-				fontFamily: `"Zumme", "Inter" ,system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
+				fontFamily: `"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
 				color: "gray.800",
 			},
 		},
 		Heading: {
 			baseStyle: {
-				fontFamily: `"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
+				fontFamily: `"Zumme", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
 				color: "gray.900",
 			},
 		},

@@ -1,15 +1,16 @@
-// src/components/home/Home.tsx
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { MainContainer } from "../../layout/components/MainContainer";
+import { HomeCards } from "./HomeCards";
+import { HomeDestacados } from "./HomeDestacados";
 
 export const Home = () => {
   return (
-    <Box w="100%">
+    <Box w="100%" bgColor="gray.300">
       {/* HERO VIDEO FULL WIDTH */}
       <Box
         position="relative"
-        w="100%"
-        h={{ base: "60vh", md: "80vh" }}
+        w={{ base: "100%" }}
+        h={{ base: "75vh", md: "85vh" }}
         overflow="hidden"
       >
         <video
@@ -29,10 +30,10 @@ export const Home = () => {
       </Box>
 
       <MainContainer>
-        <Heading size="lg" mb={2}>
-          Bienvenido a Air7
-        </Heading>
-        <Text>Tu tienda de zapatillas.</Text>
+        <Flex flexDir="column" gap={20}>
+          <HomeCards />
+          <HomeDestacados />
+        </Flex>
       </MainContainer>
     </Box>
   );
