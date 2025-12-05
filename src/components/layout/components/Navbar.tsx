@@ -47,10 +47,11 @@ export const MobileMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pathname } = useLayout();
 
-  const textColor = useColorModeValue("#fe471e", "white");
-  const placeholderColor = useColorModeValue("gray.900", "gray.300");
+  const textColor = useColorModeValue("brand.500", "white");
+  const placeholderColor = useColorModeValue("gray.500", "gray.300");
   const drawerBg = useColorModeValue("white", "gray.900");
   const headerColor = useColorModeValue("gray.900", "white");
+  const inputBorderColor = useColorModeValue("brand.500", "white");
 
   return (
     <>
@@ -59,7 +60,7 @@ export const MobileMenu = () => {
         icon={<HamburgerIcon boxSize={7} />}
         variant="ghost"
         display={{ base: "inline-flex", md: "none" }}
-        color="#763324"
+        color="brand.700"
         size="lg"
         minW="48px"
         minH="48px"
@@ -83,7 +84,12 @@ export const MobileMenu = () => {
             justifyContent="space-between"
             color={headerColor}
           >
-            <Text fontWeight="semibold">Menú</Text>
+            <Text
+              color={useColorModeValue("gray.900", "white")}
+              fontWeight="semibold"
+            >
+              Menú
+            </Text>
             <ColorModeToggle />
           </DrawerHeader>
 
@@ -99,8 +105,8 @@ export const MobileMenu = () => {
                   borderRadius="full"
                   color={textColor}
                   _placeholder={{ color: placeholderColor }}
-                  borderColor={useColorModeValue("#fe471e", "white")}
-                  focusBorderColor="#763324"
+                  borderColor={inputBorderColor}
+                  focusBorderColor="brand.700"
                 />
               </InputGroup>
             </Box>
@@ -145,6 +151,7 @@ export const NavBar = () => {
   const { isHome, pathname } = useLayout();
 
   const textColor = isHome ? "white" : "gray.900";
+  const borderColor = isHome ? "brand.700" : "brand.500";
 
   return (
     <Flex
@@ -156,7 +163,7 @@ export const NavBar = () => {
       h="50px"
       borderRadius="full"
       borderWidth="1px"
-      borderColor={isHome ? "#763324" : "#fe471e"}
+      borderColor={borderColor}
       bg={isHome ? "rgba(109, 60, 49, 0.35)" : "rgba(250, 110, 79, 0.35)"}
       boxShadow="0 8px 24px rgba(48, 48, 48, 0.35)"
       w="50%"
