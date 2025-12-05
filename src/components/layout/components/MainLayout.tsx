@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import Footer from "./Footer";
 import { PorqueElegirnos } from "../../common/PorqueElegirnos";
-import { TopHeader } from "../../common/topHeader";
+import { TopHeader } from "../../common/TopHeader";
 
 export const MainLayout = () => {
   return (
