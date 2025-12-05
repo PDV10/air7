@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { ColorModeToggle, MobileMenu, NavBar } from "./Navbar";
+import { MobileMenu, NavBar } from "./Navbar";
 import logoLight from "../../../assets/logos/AIRSEVEN-logo-blanco.webp";
 import logoDark from "../../../assets/logos/AIRSEVEN-logo-negro.webp";
 import { SearchPill } from "./SearchPill";
@@ -38,9 +38,7 @@ export const Header = () => {
           <Box display={{ base: "none", md: "block" }}>
             <SearchPill />
           </Box>
-          <Box display={{ base: "none", md: "block" }}>
-            <ColorModeToggle />
-          </Box>
+
           <MobileMenu />
         </HStack>
       </Flex>

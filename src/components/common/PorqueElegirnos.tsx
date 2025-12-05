@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { SvgIcon } from "./SvgIcon";
-import img from "../../assets/AIRSEVEN-FEED-IDEAS-06.jpg";
+import img from "../../assets/AIRSEVEN-FEED-IDEAS-06.webp";
 
 const FEATURES = [
   { icon: "products", label: "PRODUCTOS ORIGINALES." },

@@ -1,9 +1,9 @@
 import { Flex, Heading, Image, Box, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-import flyer05 from "../../../assets/AIRSEVEN-FLYERS-05.jpg";
-import flyer07 from "../../../assets/AIRSEVEN-FLYERS-07.jpg";
-import flyer09 from "../../../assets/AIRSEVEN-FLYERS-09.jpg";
+import flyer05 from "../../../assets/AIRSEVEN-FLYERS-05.webp";
+import flyer07 from "../../../assets/AIRSEVEN-FLYERS-07.webp";
+import flyer09 from "../../../assets/AIRSEVEN-FLYERS-09.webp";
 
 const CARDS = [
   { img: flyer05, label: "Ofertas", to: "/ofertas" },

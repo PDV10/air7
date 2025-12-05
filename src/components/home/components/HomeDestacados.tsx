@@ -2,11 +2,11 @@ import { Box, Flex, Text, Image, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { keyframes } from "@emotion/react";
 
-import img1 from "../../../assets/zapatillas/MB-04-phoenix.jpeg";
-import img2 from "../../../assets/zapatillas/zapatilla-puma-2.jpeg";
-import img3 from "../../../assets/zapatillas/zapatilla-puma-3.jpeg";
-import img4 from "../../../assets/zapatillas/zapatilla-puma-4.jpeg";
-import img5 from "../../../assets/zapatillas/zapatillas-puma.jpeg";
+import img1 from "../../../assets/zapatillas/MB-04-phoenix.webp";
+import img2 from "../../../assets/zapatillas/zapatilla-puma-2.webp";
+import img3 from "../../../assets/zapatillas/zapatilla-puma-3.webp";
+import img4 from "../../../assets/zapatillas/zapatilla-puma-4.webp";
+import img5 from "../../../assets/zapatillas/zapatillas-puma.webp";
 
 const marquee = keyframes`
   0% { transform: translateX(0); }
