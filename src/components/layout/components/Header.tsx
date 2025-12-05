@@ -14,7 +14,7 @@ export const Header = () => {
     <Box
       as="header"
       position="absolute"
-      top={0}
+      top={10}
       left={0}
       w="100%"
       zIndex={100}
