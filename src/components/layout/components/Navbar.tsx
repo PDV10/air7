@@ -17,14 +17,14 @@ import {
   useColorMode,
   Box,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useLayout } from "../hooks/useLayout";
 import { HamburgerIcon, MoonIcon, SearchIcon, SunIcon } from "@chakra-ui/icons";
 
 export const NAV_LINKS = [
-  { label: "Ofertas", to: "/ofertas" },
-  { label: "Deporte", to: "/deporte" },
-  { label: "Moda", to: "/moda" },
+  { label: "Ofertas", to: "/productos", category: "ofertas" },
+  { label: "Deporte", to: "/productos", category: "deporte" },
+  { label: "Moda", to: "/productos", category: "moda" },
   { label: "Nosotros", to: "/nosotros" },
 ];
 
@@ -46,12 +46,32 @@ export const ColorModeToggle = () => {
 export const MobileMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pathname } = useLayout();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  const currentCategory = searchParams.get("category") ?? "ofertas";
 
   const textColor = useColorModeValue("brand.500", "white");
   const placeholderColor = useColorModeValue("gray.500", "gray.300");
   const drawerBg = useColorModeValue("white", "gray.900");
   const headerColor = useColorModeValue("gray.900", "white");
   const inputBorderColor = useColorModeValue("brand.500", "white");
+
+  const getNavTo = (link: (typeof NAV_LINKS)[number]) => {
+    const isProductos = link.to === "/productos" && link.category;
+
+    if (!isProductos) return link.to;
+
+    const params = new URLSearchParams(searchParams);
+    params.set("category", link.category);
+
+    const search = params.toString();
+
+    return {
+      pathname: link.to,
+      search: search ? `?${search}` : "",
+    };
+  };
 
   return (
     <>
@@ -84,10 +104,7 @@ export const MobileMenu = () => {
             justifyContent="space-between"
             color={headerColor}
           >
-            <Text
-              color={useColorModeValue("gray.900", "white")}
-              fontWeight="semibold"
-            >
+            <Text color={headerColor} fontWeight="semibold">
               Menú
             </Text>
             <ColorModeToggle />
@@ -113,13 +130,20 @@ export const MobileMenu = () => {
 
             <VStack align="flex-start" spacing={4}>
               {NAV_LINKS.map((link) => {
-                const isActive = pathname === link.to;
+                const isProductos = link.to === "/productos" && link.category;
+
+                const isActive = isProductos
+                  ? location.pathname === "/productos" &&
+                    currentCategory === link.category
+                  : pathname === link.to;
+
+                const to = getNavTo(link);
 
                 return (
                   <Box
-                    key={link.to}
+                    key={link.label}
                     as={Link}
-                    to={link.to}
+                    to={to}
                     onClick={onClose}
                     _hover={{
                       opacity: 0.85,
@@ -148,10 +172,30 @@ export const MobileMenu = () => {
 };
 
 export const NavBar = () => {
-  const { isHome, pathname } = useLayout();
+  const { isHome } = useLayout();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  const currentCategory = searchParams.get("category") ?? "ofertas";
 
   const textColor = isHome ? "white" : "gray.900";
   const borderColor = isHome ? "brand.700" : "brand.500";
+
+  const getNavTo = (link: (typeof NAV_LINKS)[number]) => {
+    const isProductos = link.to === "/productos" && link.category;
+
+    if (!isProductos) return link.to;
+
+    const params = new URLSearchParams(searchParams);
+    params.set("category", link.category);
+
+    const search = params.toString();
+
+    return {
+      pathname: link.to,
+      search: search ? `?${search}` : "",
+    };
+  };
 
   return (
     <Flex
@@ -170,13 +214,22 @@ export const NavBar = () => {
       display={{ base: "none", md: "flex" }}
     >
       {NAV_LINKS.map((link) => {
-        const isActive = !isHome && pathname === link.to;
+        const isProductos = link.to === "/productos" && link.category;
+
+        const isActive = !isHome
+          ? isProductos
+            ? location.pathname === "/productos" &&
+              currentCategory === link.category
+            : location.pathname === link.to
+          : false;
+
+        const to = getNavTo(link);
 
         return (
           <Button
-            key={link.to}
+            key={link.label}
             as={Link}
-            to={link.to}
+            to={to}
             variant="unstyled"
             minW="auto"
             p={1}

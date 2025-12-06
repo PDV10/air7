@@ -8,12 +8,7 @@ import { Redes } from "../../common/Redes";
 
 export const MainLayout = () => {
   return (
-    <Box
-      minH="100vh"
-      display="flex"
-      flexDirection="column"
-      bg="surface.primary"
-    >
+    <Box minH="100vh" display="flex" flexDirection="column" bg="gray.300">
       <TopHeader />
       <Header />
       <Box as="main" flex="1">

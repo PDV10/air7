@@ -6,9 +6,9 @@ import flyer09 from "../../../assets/AIRSEVEN-FLYERS-09.webp";
 import { ProductCard } from "../../common/ProductCard";
 
 const CARDS = [
-  { img: flyer05, label: "Ofertas", to: "/ofertas" },
-  { img: flyer07, label: "Deporte", to: "/deporte" },
-  { img: flyer09, label: "Moda", to: "/moda" },
+  { img: flyer05, label: "Ofertas", category: "ofertas" },
+  { img: flyer07, label: "Deporte", category: "deporte" },
+  { img: flyer09, label: "Moda", category: "moda" },
 ];
 
 export const HomeCards = () => {
@@ -33,8 +33,8 @@ export const HomeCards = () => {
       >
         {CARDS.map((card) => (
           <ProductCard
-            key={card.to}
-            to={card.to}
+            key={card.category}
+            to={`/productos?category=${card.category}`}
             image={card.img}
             imageAlt={card.label}
             labelOverlay={card.label}

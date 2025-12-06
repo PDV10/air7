@@ -91,7 +91,7 @@ export const HomeDestacados = () => {
           }}
           transition="all 0.2s ease"
         >
-          Ver más
+          VER MÁS
         </Button>
       </Flex>
     </Flex>

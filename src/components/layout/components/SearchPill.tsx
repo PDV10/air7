@@ -8,32 +8,42 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 import { useRef, useState } from "react";
 import { useLayout } from "../hooks/useLayout";
+import { useSearchParams } from "react-router-dom";
 
 export const SearchPill = () => {
   const { isHome } = useLayout();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialSearch = searchParams.get("search") ?? "";
 
   const iconColor = isHome ? "white" : "gray.900";
   const inputColor = isHome ? "white" : "gray.900";
   const placeholderColor = isHome ? "whiteAlpha.600" : "gray.400";
 
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(Boolean(initialSearch));
+  const [query, setQuery] = useState(initialSearch);
   const ref = useRef<HTMLDivElement>(null);
-
-  const searchText = (text: string) => {
-    console.log("Buscar:", text);
-  };
 
   useOutsideClick({
     ref: ref as React.RefObject<HTMLElement>,
     handler: () => setOpen(false),
   });
 
-  const handleSubmit = () => {
-    if (!query.trim()) return;
-    searchText(query);
-    setOpen(false);
-    setQuery("");
+  const updateSearchParam = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    const trimmed = value.trim();
+
+    if (trimmed) {
+      params.set("search", trimmed);
+    } else {
+      params.delete("search");
+    }
+
+    setSearchParams(params);
+  };
+
+  const handleIconClick = () => {
+    setOpen((prev) => !prev);
   };
 
   return (
@@ -63,7 +73,7 @@ export const SearchPill = () => {
             transform: "scale(1.05)",
           }}
           _active={{ transform: "scale(0.95)" }}
-          onClick={() => setOpen((v) => !v)}
+          onClick={handleIconClick}
         />
 
         {open && (
@@ -76,10 +86,14 @@ export const SearchPill = () => {
             color={inputColor}
             _placeholder={{ color: placeholderColor }}
             _focus={{ boxShadow: "none" }}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setQuery(value);
+              updateSearchParam(value);
+            }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleSubmit();
+                setOpen(false);
               }
             }}
           />
