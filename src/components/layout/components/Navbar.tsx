@@ -17,14 +17,28 @@ import {
   useColorMode,
   Box,
 } from "@chakra-ui/react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
-import { useLayout } from "../hooks/useLayout";
+import { Link } from "react-router-dom";
 import { HamburgerIcon, MoonIcon, SearchIcon, SunIcon } from "@chakra-ui/icons";
+import { useNavbar } from "../hooks/useNavbar";
+import React from "react";
+import type { ProductCategory } from "../../productos/types/product";
 
-export const NAV_LINKS = [
-  { label: "Ofertas", to: "/productos", category: "ofertas" },
-  { label: "Deporte", to: "/productos", category: "deporte" },
-  { label: "Moda", to: "/productos", category: "moda" },
+export const NAV_LINKS: {
+  label: string;
+  to: string;
+  category?: ProductCategory;
+}[] = [
+  {
+    label: "Ofertas",
+    to: "/productos",
+    category: "ofertas" as ProductCategory,
+  },
+  {
+    label: "Deporte",
+    to: "/productos",
+    category: "deporte" as ProductCategory,
+  },
+  { label: "Moda", to: "/productos", category: "moda" as ProductCategory },
   { label: "Nosotros", to: "/nosotros" },
 ];
 
@@ -45,11 +59,8 @@ export const ColorModeToggle = () => {
 
 export const MobileMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { pathname } = useLayout();
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-
-  const currentCategory = searchParams.get("category") ?? "ofertas";
+  const { getNavTo, isLinkActive, searchParams, setSearchParams, isHome } =
+    useNavbar();
 
   const textColor = useColorModeValue("brand.500", "white");
   const placeholderColor = useColorModeValue("gray.500", "gray.300");
@@ -57,20 +68,22 @@ export const MobileMenu = () => {
   const headerColor = useColorModeValue("gray.900", "white");
   const inputBorderColor = useColorModeValue("brand.500", "white");
 
-  const getNavTo = (link: (typeof NAV_LINKS)[number]) => {
-    const isProductos = link.to === "/productos" && link.category;
+  const initialSearch = searchParams.get("search") ?? "";
+  const [query, setQuery] = React.useState(initialSearch);
 
-    if (!isProductos) return link.to;
+  const handleSearchChange = (value: string) => {
+    setQuery(value);
 
     const params = new URLSearchParams(searchParams);
-    params.set("category", link.category);
+    const trimmed = value.trim();
 
-    const search = params.toString();
+    if (trimmed) {
+      params.set("search", trimmed);
+    } else {
+      params.delete("search");
+    }
 
-    return {
-      pathname: link.to,
-      search: search ? `?${search}` : "",
-    };
+    setSearchParams(params);
   };
 
   return (
@@ -90,9 +103,18 @@ export const MobileMenu = () => {
           transform: "scale(1.05)",
         }}
         onClick={onOpen}
+        position="absolute"
+        top={5}
+        right={5}
       />
 
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        blockScrollOnMount={false}
+        preserveScrollBarGap
+      >
         <DrawerOverlay />
 
         <DrawerContent bg={drawerBg}>
@@ -111,33 +133,31 @@ export const MobileMenu = () => {
           </DrawerHeader>
 
           <DrawerBody>
-            <Box mb={6}>
-              <InputGroup>
-                <InputLeftElement pointerEvents="none">
-                  <SearchIcon color={textColor} />
-                </InputLeftElement>
+            {!isHome && (
+              <Box mb={6}>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">
+                    <SearchIcon color={textColor} />
+                  </InputLeftElement>
 
-                <Input
-                  placeholder="Buscar..."
-                  borderRadius="full"
-                  color={textColor}
-                  _placeholder={{ color: placeholderColor }}
-                  borderColor={inputBorderColor}
-                  focusBorderColor="brand.700"
-                />
-              </InputGroup>
-            </Box>
+                  <Input
+                    placeholder="Buscar..."
+                    borderRadius="full"
+                    color={textColor}
+                    _placeholder={{ color: placeholderColor }}
+                    borderColor={inputBorderColor}
+                    focusBorderColor="brand.700"
+                    value={query}
+                    onChange={(e) => handleSearchChange(e.target.value)}
+                  />
+                </InputGroup>
+              </Box>
+            )}
 
             <VStack align="flex-start" spacing={4}>
               {NAV_LINKS.map((link) => {
-                const isProductos = link.to === "/productos" && link.category;
-
-                const isActive = isProductos
-                  ? location.pathname === "/productos" &&
-                    currentCategory === link.category
-                  : pathname === link.to;
-
                 const to = getNavTo(link);
+                const isActive = isLinkActive(link);
 
                 return (
                   <Box
@@ -172,30 +192,10 @@ export const MobileMenu = () => {
 };
 
 export const NavBar = () => {
-  const { isHome } = useLayout();
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-
-  const currentCategory = searchParams.get("category") ?? "ofertas";
+  const { isHome, getNavTo, isLinkActive } = useNavbar();
 
   const textColor = isHome ? "white" : "gray.900";
   const borderColor = isHome ? "brand.700" : "brand.500";
-
-  const getNavTo = (link: (typeof NAV_LINKS)[number]) => {
-    const isProductos = link.to === "/productos" && link.category;
-
-    if (!isProductos) return link.to;
-
-    const params = new URLSearchParams(searchParams);
-    params.set("category", link.category);
-
-    const search = params.toString();
-
-    return {
-      pathname: link.to,
-      search: search ? `?${search}` : "",
-    };
-  };
 
   return (
     <Flex
@@ -214,16 +214,8 @@ export const NavBar = () => {
       display={{ base: "none", md: "flex" }}
     >
       {NAV_LINKS.map((link) => {
-        const isProductos = link.to === "/productos" && link.category;
-
-        const isActive = !isHome
-          ? isProductos
-            ? location.pathname === "/productos" &&
-              currentCategory === link.category
-            : location.pathname === link.to
-          : false;
-
         const to = getNavTo(link);
+        const isActive = isLinkActive(link);
 
         return (
           <Button

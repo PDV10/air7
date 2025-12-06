@@ -14,9 +14,12 @@ import {
   Button,
   Flex,
   Badge,
+  useBreakpointValue,
+  Collapse,
 } from "@chakra-ui/react";
 import { useProductsFilters } from "../hooks/useProductsFilters";
 import { SvgIcon } from "../../common/SvgIcon";
+import { useDisclosure } from "@chakra-ui/react";
 
 const BRAND_OPTIONS = ["Nike", "Adidas", "Puma"];
 const SIZE_OPTIONS = [
@@ -64,49 +67,11 @@ export const ProductsFilters = () => {
     totalProducts,
   } = useProductsFilters();
 
-  return (
-    <Box
-      w={{ base: "100%", md: "240px" }}
-      pr={{ base: 0, md: 4 }}
-      mb={{ base: 8, md: 0 }}
-    >
-      <Heading
-        size="xl"
-        fontFamily="zuume"
-        fontWeight="bold"
-        mb={6}
-        fontSize={{ base: "2xl", md: "3xl" }}
-      >
-        &gt; {titleLabel}
-      </Heading>
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: false });
 
-      <Flex align="center" justify="space-between" mb={2}>
-        <Text fontWeight="bold" fontSize={{ base: "lg", md: "xl" }}>
-          Filtros
-        </Text>
-        {hasActiveFilters && (
-          <Button
-            variant="ghost"
-            size="xs"
-            color="gray.500"
-            _hover={{
-              color: "brand.500",
-              bg: "transparent",
-              textDecoration: "underline",
-              transform: "scale(1.05)",
-            }}
-            onClick={handleClearFilters}
-          >
-            <SvgIcon
-              name="cleanIcon"
-              w={8}
-              h={8}
-              tooltipLabel="Reset Filters"
-            />
-          </Button>
-        )}
-      </Flex>
-
+  const filtersContent = (
+    <>
       <Divider mb={4} borderColor="gray.400" />
 
       <Accordion allowMultiple>
@@ -230,6 +195,7 @@ export const ProductsFilters = () => {
           </Box>
         </AccordionItem>
       </Accordion>
+
       <Flex align="center" gap={2} mt={4} pl={2}>
         <Badge
           borderRadius="full"
@@ -245,6 +211,104 @@ export const ProductsFilters = () => {
           producto{totalProducts !== 1 ? "s" : ""} encontrados
         </Text>
       </Flex>
+    </>
+  );
+
+  // MOBILE VERSION
+  if (isMobile) {
+    return (
+      <Box w="90%">
+        <Flex align="center" justify="space-between" mb={2}>
+          <Heading size="md" fontFamily="zuume" fontWeight="bold" fontSize="lg">
+            &gt; {titleLabel}
+          </Heading>
+
+          <Flex align="center" gap={2}>
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="xs"
+                color="gray.500"
+                _hover={{
+                  color: "brand.500",
+                  bg: "transparent",
+                  textDecoration: "underline",
+                  transform: "scale(1.05)",
+                }}
+                onClick={handleClearFilters}
+              >
+                <SvgIcon
+                  name="cleanIcon"
+                  w={6}
+                  h={6}
+                  tooltipLabel="Reset Filters"
+                />
+              </Button>
+            )}
+            <Button
+              size="sm"
+              borderRadius="full"
+              variant="outline"
+              borderColor="brand.500"
+              onClick={onToggle}
+            >
+              {isOpen ? "Ocultar filtros" : "Mostrar filtros"}
+            </Button>
+          </Flex>
+        </Flex>
+
+        <Collapse in={isOpen} animateOpacity>
+          {filtersContent}
+        </Collapse>
+      </Box>
+    );
+  }
+
+  // DESKTOP VERSION (sidebar)
+  return (
+    <Box
+      w={{ base: "100%", md: "240px" }}
+      pr={{ base: 0, md: 4 }}
+      mb={{ base: 8, md: 0 }}
+    >
+      <Heading
+        size="xl"
+        fontFamily="zuume"
+        fontWeight="bold"
+        mb={6}
+        fontSize={{ base: "2xl", md: "3xl" }}
+      >
+        &gt; {titleLabel}
+      </Heading>
+
+      <Flex align="center" justify="space-between" mb={2}>
+        <Text fontWeight="bold" fontSize={{ base: "lg", md: "xl" }}>
+          Filtros
+        </Text>
+        {hasActiveFilters && (
+          <Button
+            variant="ghost"
+            size="xs"
+            color="gray.500"
+            _hover={{
+              color: "brand.500",
+              bg: "transparent",
+              textDecoration: "underline",
+              transform: "scale(1.05)",
+            }}
+            onClick={handleClearFilters}
+          >
+            <SvgIcon
+              name="cleanIcon"
+              w={8}
+              h={8}
+              tooltipLabel="Reset Filters"
+            />
+          </Button>
+        )}
+      </Flex>
+
+      {filtersContent}
     </Box>
   );
 };

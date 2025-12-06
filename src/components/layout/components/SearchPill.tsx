@@ -46,6 +46,10 @@ export const SearchPill = () => {
     setOpen((prev) => !prev);
   };
 
+  if (isHome) {
+    return null;
+  }
+
   return (
     <Box ref={ref}>
       <Flex
@@ -60,6 +64,9 @@ export const SearchPill = () => {
         px={open ? 3 : 0}
         width={open ? "260px" : "50px"}
         transition="all 0.25s ease"
+        position="absolute"
+        top={5}
+        right="80px"
       >
         <IconButton
           aria-label="Buscar"

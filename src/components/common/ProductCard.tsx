@@ -1,4 +1,11 @@
-import { Box, Flex, Image, Text, type BoxProps } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Image,
+  Text,
+  type BoxProps,
+  type ResponsiveValue,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 type ProductCardProps = BoxProps & {
@@ -7,13 +14,13 @@ type ProductCardProps = BoxProps & {
   imageAlt: string;
   title?: string;
   price?: number | string;
-  cardHeight?: string | number;
-  cardWidth?: string | number;
-  cardRadius?: string | number;
+  cardHeight?: ResponsiveValue<string | number>;
+  cardWidth?: ResponsiveValue<string | number>;
+  cardRadius?: ResponsiveValue<string | number>;
   labelOverlay?: string;
   objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
   textColor?: string;
-  textWidth?: string;
+  textWidth?: string | number;
 };
 
 export const ProductCard = ({
@@ -29,12 +36,13 @@ export const ProductCard = ({
   labelOverlay,
   textColor = "gray.100",
   textWidth = "lg",
+  ...rest
 }: ProductCardProps) => {
   const formattedPrice =
     typeof price === "number" ? price.toLocaleString("es-AR") : price ?? "";
 
   return (
-    <Flex flexDir="column">
+    <Flex flexDir="column" {...rest}>
       <Flex
         flexBasis={{
           base: "100%",
@@ -98,12 +106,13 @@ export const ProductCard = ({
           </Box>
         </Flex>
       </Flex>
+
       {title && (
         <Text
           pl={2}
           mt={3}
           fontWeight="semibold"
-          fontSize={{ base: "md", md: textWidth }}
+          fontSize={textWidth}
           color={textColor}
         >
           {title}

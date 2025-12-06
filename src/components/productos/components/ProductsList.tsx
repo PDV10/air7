@@ -51,22 +51,29 @@ export const ProductsList = ({
             <Flex
               flexWrap="wrap"
               justifyContent="center"
-              gap={{ base: 6, md: 10 }}
+              gap={{ base: 6, md: 8 }}
             >
               {pageProducts.map((product: Product) => (
-                <ProductCard
+                <Box
                   key={product.id}
-                  to={`/productos/${product.id}`}
-                  image={product.imageUrl}
-                  imageAlt={product.name}
-                  title={product.name}
-                  price={product.price}
-                  cardWidth="270px"
-                  cardHeight="300px"
-                  objectFit="contain"
-                  textColor="gray.900"
-                  textWidth="md"
-                />
+                  flex={{
+                    base: "0 0 calc(50% - 12px)",
+                    md: "0 0 270px",
+                  }}
+                >
+                  <ProductCard
+                    to={`/productos/${product.id}`}
+                    image={product.imageUrl}
+                    imageAlt={product.name}
+                    title={product.name}
+                    price={product.price}
+                    cardWidth="100%"
+                    cardHeight={{ base: "230px", md: "300px" }}
+                    objectFit="contain"
+                    textColor="gray.900"
+                    textWidth="md"
+                  />
+                </Box>
               ))}
             </Flex>
           </Flex>

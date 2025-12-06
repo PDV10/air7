@@ -12,7 +12,7 @@ export const Productos = () => {
       py={10}
       gap={8}
       minH="90vh"
-      maxW="90%"
+      maxW={{ base: "100%", md: "90%" }}
       justifyContent="center"
       flexDir={{ base: "column", md: "row" }}
     >

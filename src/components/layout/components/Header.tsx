@@ -21,14 +21,16 @@ export const Header = () => {
       px={{ base: 4, md: 8 }}
       py={{ base: 3, md: 4 }}
     >
-      <Flex
-        align="center"
-        justify="space-between"
-        maxW="1200px"
-        mx="auto"
-        gap={4}
-      >
-        <Box as={Link} to="/" display="inline-flex" alignItems="center">
+      <Flex align="center" justify="center" maxW="1200px" mx="auto" gap={4}>
+        <Box
+          as={Link}
+          to="/"
+          display="inline-flex"
+          alignItems="center"
+          position="absolute"
+          top={5}
+          left={{ base: 5, xl: 28 }}
+        >
           <Image src={logoSrc} alt="Air7" h="60px" objectFit="contain" />
         </Box>
 
