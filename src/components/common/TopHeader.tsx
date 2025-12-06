@@ -7,12 +7,13 @@ export const TopHeader = () => {
       bg="black"
       alignItems="center"
       px={{ base: 3, md: 6 }}
-      py={2}
+      py={{ base: 1, md: 2 }}
+      gap={3}
       fontSize={{ base: "xs", md: "sm" }}
     >
       <Flex flex="1" />
 
-      <Flex flex="1" justify="center">
+      <Flex flex={{ md: 1 }} justify="center">
         <Text color="white" fontWeight="medium" textAlign="center">
           ENVÍO GRATIS A PARTIR DE $160.000
         </Text>

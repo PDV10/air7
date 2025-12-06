@@ -1,5 +1,6 @@
 import { Flex, Link, type FlexProps } from "@chakra-ui/react";
 import { SvgIcon } from "./SvgIcon";
+import { useMatch } from "react-router-dom";
 
 type RedesProps = {
   flexDir?: FlexProps["flexDir"];
@@ -8,6 +9,9 @@ type RedesProps = {
 };
 
 export const Redes = ({ flexDir = "column", w = 8, h = 8 }: RedesProps) => {
+  const isProductDetail = useMatch("/productos/:productoId");
+
+  if (isProductDetail) return null;
   const facebookHref = "#";
   const whatsappHref = "https://wa.me/5492284580546";
   const whatsappMessage =

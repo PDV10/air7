@@ -5,7 +5,7 @@ import { ALL_PRODUCTS } from "../products";
 
 export type OrderBy = "popular" | "priceAsc" | "priceDesc" | "nameAsc";
 
-const CATEGORY_LABELS: Record<ProductCategory, string> = {
+export const CATEGORY_LABELS: Record<ProductCategory, string> = {
   ofertas: "Ofertas",
   deporte: "Deporte",
   moda: "Moda",
@@ -103,7 +103,6 @@ export const useProductsFilters = () => {
 
   const filteredProducts = useMemo(() => {
     return ALL_PRODUCTS.filter((product) => {
-      // 👇 Solo filtro por categoría si viene en la URL
       if (categoryParam && product.category !== categoryParam) return false;
 
       if (

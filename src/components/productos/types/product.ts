@@ -9,4 +9,5 @@ export type Product = {
 	sizes: string[];
 	recommendedFor: string;
 	imageUrl: string;
+	description?: string;
 };
