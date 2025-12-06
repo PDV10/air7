@@ -29,6 +29,10 @@ export const NAV_LINKS: {
   category?: ProductCategory;
 }[] = [
   {
+    label: "Todos",
+    to: "/productos",
+  },
+  {
     label: "Ofertas",
     to: "/productos",
     category: "ofertas" as ProductCategory,
@@ -38,7 +42,11 @@ export const NAV_LINKS: {
     to: "/productos",
     category: "deporte" as ProductCategory,
   },
-  { label: "Moda", to: "/productos", category: "moda" as ProductCategory },
+  {
+    label: "Moda",
+    to: "/productos",
+    category: "moda" as ProductCategory,
+  },
   { label: "Nosotros", to: "/nosotros" },
 ];
 
@@ -93,7 +101,7 @@ export const MobileMenu = () => {
         icon={<HamburgerIcon boxSize={7} />}
         variant="ghost"
         display={{ base: "inline-flex", md: "none" }}
-        color="brand.700"
+        color="brand.500"
         size="lg"
         minW="48px"
         minH="48px"
@@ -137,7 +145,7 @@ export const MobileMenu = () => {
               <Box mb={6}>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
-                    <SearchIcon color={textColor} />
+                    <SearchIcon color="black" />
                   </InputLeftElement>
 
                   <Input

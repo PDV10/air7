@@ -1,5 +1,4 @@
 import { useLocation, useSearchParams } from "react-router-dom";
-import { useLayout } from "../hooks/useLayout";
 import type { ProductCategory } from "../../productos/types/product";
 
 type NavLink = {
@@ -11,36 +10,39 @@ type NavLink = {
 export const useNavbar = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { isHome, pathname } = useLayout();
+  const pathname = location.pathname;
 
-  const currentCategory = (searchParams.get("category") ??
-    "ofertas") as ProductCategory;
+  const isHome = pathname === "/";
 
   const getNavTo = (link: NavLink) => {
-    const isProductos = link.to === "/productos";
+    if (link.to === "/productos" && link.category) {
+      const params = new URLSearchParams(searchParams);
+      params.set("category", link.category);
+      const qs = params.toString();
+      return qs ? `${link.to}?${qs}` : link.to;
+    }
 
-    if (!isProductos || !link.category) return link.to;
+    if (link.to === "/productos" && !link.category) {
+      const params = new URLSearchParams(searchParams);
+      params.delete("category");
+      const qs = params.toString();
+      return qs ? `${link.to}?${qs}` : link.to;
+    }
 
-    const params = new URLSearchParams(searchParams);
-    const category = link.category;
-
-    params.set("category", category);
-
-    const search = params.toString();
-
-    return {
-      pathname: link.to,
-      search: search ? `?${search}` : "",
-    };
+    return link.to;
   };
 
   const isLinkActive = (link: NavLink) => {
-    const isProductos = link.to === "/productos";
+    if (link.to === "/productos") {
+      if (pathname !== "/productos") return false;
 
-    if (isProductos && link.category) {
-      return (
-        location.pathname === "/productos" && currentCategory === link.category
-      );
+      const categoryParam = searchParams.get("category");
+
+      if (!categoryParam) {
+        return !link.category;
+      }
+
+      return link.category === (categoryParam as ProductCategory);
     }
 
     return pathname === link.to;
@@ -48,7 +50,6 @@ export const useNavbar = () => {
 
   return {
     isHome,
-    currentCategory,
     getNavTo,
     isLinkActive,
     searchParams,

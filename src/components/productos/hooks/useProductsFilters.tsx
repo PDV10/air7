@@ -22,12 +22,14 @@ export const useProductsFilters = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const params = new URLSearchParams(searchParams);
 
-  const categoryParam = (searchParams.get("category") ??
-    "ofertas") as ProductCategory;
+  const categoryParam = searchParams.get("category") as ProductCategory | null;
+
   const brandsParam = searchParams.get("brands") ?? "";
   const selectedBrands = brandsParam ? brandsParam.split(",") : [];
+
   const sizesParam = searchParams.get("sizes") ?? "";
   const selectedSizes = sizesParam ? sizesParam.split(",") : [];
+
   const searchTermParam = searchParams.get("search") ?? "";
   const searchTerm = searchTermParam.trim().toLowerCase();
 
@@ -81,21 +83,28 @@ export const useProductsFilters = () => {
     params.delete("brands");
     params.delete("sizes");
     params.delete("recommendedFor");
+    params.delete("search");
+    params.delete("category");
     setSearchParams(params);
   };
 
   const hasActiveFilters =
     selectedBrands.length > 0 ||
     selectedSizes.length > 0 ||
-    selectedRecommendedFor.length > 0;
+    selectedRecommendedFor.length > 0 ||
+    !!searchTerm ||
+    !!categoryParam;
 
   const checkBoxColorScheme = "brand";
 
-  const titleLabel = CATEGORY_LABELS[categoryParam] ?? "Productos";
+  const titleLabel = categoryParam
+    ? CATEGORY_LABELS[categoryParam]
+    : "Productos";
 
   const filteredProducts = useMemo(() => {
     return ALL_PRODUCTS.filter((product) => {
-      if (product.category !== categoryParam) return false;
+      // 👇 Solo filtro por categoría si viene en la URL
+      if (categoryParam && product.category !== categoryParam) return false;
 
       if (
         selectedBrands.length > 0 &&
@@ -136,7 +145,15 @@ export const useProductsFilters = () => {
     searchTerm,
   ]);
 
-  const totalProducts = filteredProducts.length;
+  const hasFilterParams =
+    !!searchParams.get("category") ||
+    !!searchParams.get("brands") ||
+    !!searchParams.get("sizes") ||
+    !!searchParams.get("recommendedFor") ||
+    !!searchParams.get("search");
+
+  const products = hasFilterParams ? filteredProducts : ALL_PRODUCTS;
+  const totalProducts = products.length;
 
   return {
     handleBrandChange,
@@ -147,7 +164,7 @@ export const useProductsFilters = () => {
     selectedBrands,
     selectedSizes,
     selectedRecommendedFor,
-    filteredProducts,
+    products,
     checkBoxColorScheme,
     handleClearFilters,
     hasActiveFilters,

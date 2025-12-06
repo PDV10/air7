@@ -16,9 +16,7 @@ export const SearchPill = () => {
 
   const initialSearch = searchParams.get("search") ?? "";
 
-  const iconColor = isHome ? "white" : "gray.900";
   const inputColor = isHome ? "white" : "gray.900";
-  const placeholderColor = isHome ? "whiteAlpha.600" : "gray.400";
 
   const [open, setOpen] = useState(Boolean(initialSearch));
   const [query, setQuery] = useState(initialSearch);
@@ -57,7 +55,7 @@ export const SearchPill = () => {
         gap={2}
         borderRadius="full"
         borderWidth="1px"
-        borderColor="#763324"
+        borderColor="brand.500"
         bg={isHome ? "rgba(109, 60, 49, 0.35)" : "rgba(250, 110, 79, 0.35)"}
         backdropFilter="blur(6px)"
         h="50px"
@@ -72,7 +70,7 @@ export const SearchPill = () => {
           aria-label="Buscar"
           icon={<SearchIcon boxSize={5} />}
           variant="ghost"
-          color={iconColor}
+          color="black"
           size="lg"
           _hover={{
             bg: "transparent",
@@ -91,7 +89,7 @@ export const SearchPill = () => {
             border="none"
             bg="none"
             color={inputColor}
-            _placeholder={{ color: placeholderColor }}
+            _placeholder={{ color: "gray.600" }}
             _focus={{ boxShadow: "none" }}
             onChange={(e) => {
               const value = e.target.value;

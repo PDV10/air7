@@ -16,7 +16,7 @@ export const MainLayout = () => {
           zIndex={100}
           position="absolute"
           top={{ base: 32, md: "160px" }}
-          right={{ base: 6, md: "86px" }}
+          right={{ base: "28px", md: "89px" }}
         >
           <Redes />
         </Flex>

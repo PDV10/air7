@@ -5,11 +5,7 @@ import type { OrderBy } from "../hooks/useProductsFilters";
 import { useProductsList } from "../hooks/userProductsList";
 import { ProductsListPagination } from "./ProductsListPagination";
 
-export const ProductsList = ({
-  filteredProducts,
-}: {
-  filteredProducts: Product[];
-}) => {
+export const ProductsList = ({ products }: { products: Product[] }) => {
   const {
     orderBy,
     handleOrderByChange,
@@ -18,7 +14,7 @@ export const ProductsList = ({
     pageProducts,
     currentPage,
     handlePageChange,
-  } = useProductsList(filteredProducts);
+  } = useProductsList(products);
 
   return (
     <Box w={{ base: "100%", md: "70%" }} h="100%">
