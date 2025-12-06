@@ -20,6 +20,23 @@ export const ProductDetail = () => {
     md: "520px",
   });
 
+  const handleWhatsAppClick = () => {
+    const whatsappNumber = "5492284580546";
+
+    const formattedPrice = product?.price.toLocaleString("es-AR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    const message = `Hola! Me interesa el producto "${product?.name}" que vi en la web, con precio $${formattedPrice}. ¿Me podés mandar más información?`;
+
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(url, "_blank");
+  };
+
   if (!product) {
     return (
       <Box
@@ -187,6 +204,7 @@ export const ProductDetail = () => {
                   transform: "translateY(-1px)",
                   boxShadow: "0 10px 25px rgba(0,0,0,0.25)",
                 }}
+                onClick={handleWhatsAppClick}
               >
                 Comprar ahora
               </Button>
