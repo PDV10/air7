@@ -76,7 +76,7 @@ export const HomeDestacados = () => {
       <Flex justifyContent="center">
         <Button
           as={Link}
-          to="/destacados"
+          to="/productos"
           bg="brand.500"
           color="white"
           borderRadius="full"

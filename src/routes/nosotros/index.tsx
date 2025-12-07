@@ -1,9 +1,5 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Nosotros } from "../../components/nosotros/components/nosotros";
 
-export default function Cart() {
-  return (
-    <Box>
-      <Heading>Nosotros</Heading>
-    </Box>
-  );
+export default function NosotrosPage() {
+  return <Nosotros />;
 }

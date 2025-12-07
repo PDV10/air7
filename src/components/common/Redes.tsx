@@ -12,6 +12,7 @@ export const Redes = ({ flexDir = "column", w = 8, h = 8 }: RedesProps) => {
   const isProductDetail = useMatch("/productos/:productoId");
 
   if (isProductDetail) return null;
+
   const facebookHref = "#";
   const whatsappHref = "https://wa.me/5492284580546";
   const whatsappMessage =
