@@ -3,6 +3,10 @@
 		{
 			"source": "/api/admin/:path*",
 			"destination": "https://air7-api.onrender.com/api/:path*"
+		},
+		{
+			"source": "/(.*)",
+			"destination": "/index.html"
 		}
 	]
 }
