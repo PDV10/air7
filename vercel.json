@@ -2,11 +2,7 @@
 	"rewrites": [
 		{
 			"source": "/api/admin/:path*",
-			"destination": "/api/admin/:path*"
-		},
-		{
-			"source": "/(.*)",
-			"destination": "/index.html"
+			"destination": "https://air7-api.onrender.com/api/:path*"
 		}
 	]
 }

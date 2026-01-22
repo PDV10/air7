@@ -68,16 +68,16 @@ export interface ProductUpdateData {
 }
 
 export const createProduct = (data: FormData) =>
-	adminPost<Product>(buildUrl("/products"), data);
+	adminPost<Product>("/products", data);
 
 export const updateProduct = (id: number, data: ProductUpdateData) =>
-	adminPut<Product>(buildUrl(`/products/${id}`), data);
+	adminPut<Product>(`/products/${id}`, data);
 
 export const updateProductWithImage = (id: number, data: FormData) =>
-	adminPost<Product>(buildUrl(`/products/${id}/image`), data);
+	adminPost<Product>(`/products/${id}/image`, data);
 
 export const deleteProduct = (id: number) =>
-	adminDelete<void>(buildUrl(`/products/${id}`));
+	adminDelete<void>(`/products/${id}`);
 
 // ============ CATEGORÍAS ============
 
@@ -87,10 +87,10 @@ export interface CategoryFormData {
 }
 
 export const createCategory = (data: CategoryFormData) =>
-	adminPost<Category>(buildUrl("/categories"), data);
+	adminPost<Category>("/categories", data);
 
 export const updateCategory = (id: number, data: CategoryFormData) =>
-	adminPut<Category>(buildUrl(`/categories/${id}`), data);
+	adminPut<Category>(`/categories/${id}`, data);
 
 export const deleteCategory = (id: number) =>
-	adminDelete<void>(buildUrl(`/categories/${id}`));
+	adminDelete<void>(`/categories/${id}`);
