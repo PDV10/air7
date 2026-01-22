@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import type { Product } from "../types/product";
+import type { Product } from "../../../api";
+import { parsePrice } from "../../../hooks";
 import { useProductsFilters } from "./useProductsFilters";
 
 const PRODUCTS_PER_PAGE = 8;
@@ -69,9 +70,9 @@ export const useProductsList = (filteredProducts: Product[]) => {
 
     switch (orderBy) {
       case "priceAsc":
-        return products.sort((a, b) => a.price - b.price);
+        return products.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
       case "priceDesc":
-        return products.sort((a, b) => b.price - a.price);
+        return products.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
       case "nameAsc":
         return products.sort((a, b) => a.name.localeCompare(b.name));
       case "popular":
@@ -86,7 +87,7 @@ export const useProductsList = (filteredProducts: Product[]) => {
   const totalPages =
     totalProducts === 0 ? 1 : Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
 
-  const pageParam = parseInt(searchParams.get("page") ?? "1", 10);
+  const pageParam = Number.parseInt(searchParams.get("page") ?? "1", 10);
   const currentPage =
     Number.isNaN(pageParam) || pageParam < 1
       ? 1

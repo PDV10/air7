@@ -4,7 +4,7 @@ import { useProductsFilters } from "../hooks/useProductsFilters";
 import { ProductsFilters } from "./ProductsFilters";
 
 export const Productos = () => {
-  const { products } = useProductsFilters();
+  const { products, isLoading, isError } = useProductsFilters();
   return (
     <Flex
       px={8}
@@ -18,7 +18,7 @@ export const Productos = () => {
     >
       <ProductsFilters />
 
-      <ProductsList products={products} />
+      <ProductsList products={products} isLoading={isLoading} isError={isError} />
     </Flex>
   );
 };

@@ -1,173 +1,233 @@
 import { useSearchParams } from "react-router-dom";
-import type { ProductCategory } from "../types/product";
 import { useMemo } from "react";
-import { ALL_PRODUCTS } from "../products";
+import { useProducts, getUniqueValues } from "../../../hooks";
 
 export type OrderBy = "popular" | "priceAsc" | "priceDesc" | "nameAsc";
 
-export const CATEGORY_LABELS: Record<ProductCategory, string> = {
-  ofertas: "Ofertas",
-  deporte: "Deporte",
-  moda: "Moda",
-};
-
 const ORDER_BY_VALUES: OrderBy[] = [
-  "popular",
-  "priceAsc",
-  "priceDesc",
-  "nameAsc",
+	"popular",
+	"priceAsc",
+	"priceDesc",
+	"nameAsc",
 ];
 
 export const useProductsFilters = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const params = new URLSearchParams(searchParams);
+	const [searchParams, setSearchParams] = useSearchParams();
+	const params = new URLSearchParams(searchParams);
 
-  const categoryParam = searchParams.get("category") as ProductCategory | null;
+	// Fetch productos desde la API
+	const { data: allProducts = [], isLoading, isError } = useProducts();
 
-  const brandsParam = searchParams.get("brands") ?? "";
-  const selectedBrands = brandsParam ? brandsParam.split(",") : [];
+	// Obtener el mapeo de categorías (nombre a id)
+	const categoryMap = useMemo(() => {
+		const map: Record<string, number> = {};
+		for (const product of allProducts) {
+			if (product.category) {
+				map[product.category.name.toLowerCase()] = product.category.id;
+			}
+		}
+		return map;
+	}, [allProducts]);
 
-  const sizesParam = searchParams.get("sizes") ?? "";
-  const selectedSizes = sizesParam ? sizesParam.split(",") : [];
+	// Obtener label de categorías disponibles
+	const categoryLabels = useMemo(() => {
+		const labels: Record<string, string> = {};
+		for (const product of allProducts) {
+			if (product.category) {
+				labels[product.category.name.toLowerCase()] = product.category.name;
+			}
+		}
+		return labels;
+	}, [allProducts]);
 
-  const searchTermParam = searchParams.get("search") ?? "";
-  const searchTerm = searchTermParam.trim().toLowerCase();
+	// Obtener opciones dinámicas de marcas y talles (sin repetir)
+	const brandOptions = useMemo(
+		() => getUniqueValues(allProducts, "brand"),
+		[allProducts],
+	);
 
-  const recommendedForParam = searchParams.get("recommendedFor") ?? "";
-  const selectedRecommendedFor = recommendedForParam
-    ? recommendedForParam.split(",")
-    : [];
+	const sizeOptions = useMemo(
+		() => getUniqueValues(allProducts, "sizes"),
+		[allProducts],
+	);
 
-  const rawOrderBy = searchParams.get("orderBy") as OrderBy | null;
-  const orderBy: OrderBy = ORDER_BY_VALUES.includes(rawOrderBy as OrderBy)
-    ? (rawOrderBy as OrderBy)
-    : "popular";
+	const categoryParam = searchParams.get("category");
 
-  const handleBrandChange = (values: string[]) => {
-    if (values.length > 0) {
-      params.set("brands", values.join(","));
-    } else {
-      params.delete("brands");
-    }
-    setSearchParams(params);
-  };
+	const brandsParam = searchParams.get("brands") ?? "";
+	const selectedBrands = brandsParam ? brandsParam.split(",") : [];
 
-  const handleSizeChange = (values: string[]) => {
-    if (values.length > 0) {
-      params.set("sizes", values.join(","));
-    } else {
-      params.delete("sizes");
-    }
-    setSearchParams(params);
-  };
+	const sizesParam = searchParams.get("sizes") ?? "";
+	const selectedSizes = sizesParam ? sizesParam.split(",") : [];
 
-  const handleRecommendedForChange = (values: string[]) => {
-    if (values.length > 0) {
-      params.set("recommendedFor", values.join(","));
-    } else {
-      params.delete("recommendedFor");
-    }
-    setSearchParams(params);
-  };
+	const searchTermParam = searchParams.get("search") ?? "";
+	const searchTerm = searchTermParam.trim().toLowerCase();
 
-  const handleOrderByChange = (value: OrderBy) => {
-    if (value === "popular") {
-      params.delete("orderBy");
-    } else {
-      params.set("orderBy", value);
-    }
-    setSearchParams(params);
-  };
+	const recommendedForParam = searchParams.get("recommendedFor") ?? "";
+	const selectedRecommendedFor = recommendedForParam
+		? recommendedForParam.split(",")
+		: [];
 
-  const handleClearFilters = () => {
-    params.delete("brands");
-    params.delete("sizes");
-    params.delete("recommendedFor");
-    params.delete("search");
-    params.delete("category");
-    setSearchParams(params);
-  };
+	const rawOrderBy = searchParams.get("orderBy") as OrderBy | null;
+	const orderBy: OrderBy = ORDER_BY_VALUES.includes(rawOrderBy as OrderBy)
+		? (rawOrderBy as OrderBy)
+		: "popular";
 
-  const hasActiveFilters =
-    selectedBrands.length > 0 ||
-    selectedSizes.length > 0 ||
-    selectedRecommendedFor.length > 0 ||
-    !!searchTerm ||
-    !!categoryParam;
+	const handleBrandChange = (values: string[]) => {
+		if (values.length > 0) {
+			params.set("brands", values.join(","));
+		} else {
+			params.delete("brands");
+		}
+		params.delete("page");
+		setSearchParams(params);
+	};
 
-  const checkBoxColorScheme = "brand";
+	const handleSizeChange = (values: string[]) => {
+		if (values.length > 0) {
+			params.set("sizes", values.join(","));
+		} else {
+			params.delete("sizes");
+		}
+		params.delete("page");
+		setSearchParams(params);
+	};
 
-  const titleLabel = categoryParam
-    ? CATEGORY_LABELS[categoryParam]
-    : "Productos";
+	const handleRecommendedForChange = (values: string[]) => {
+		if (values.length > 0) {
+			params.set("recommendedFor", values.join(","));
+		} else {
+			params.delete("recommendedFor");
+		}
+		params.delete("page");
+		setSearchParams(params);
+	};
 
-  const filteredProducts = useMemo(() => {
-    return ALL_PRODUCTS.filter((product) => {
-      if (categoryParam && product.category !== categoryParam) return false;
+	const handleOrderByChange = (value: OrderBy) => {
+		if (value === "popular") {
+			params.delete("orderBy");
+		} else {
+			params.set("orderBy", value);
+		}
+		setSearchParams(params);
+	};
 
-      if (
-        selectedBrands.length > 0 &&
-        !selectedBrands.includes(product.brand)
-      ) {
-        return false;
-      }
+	const handleClearFilters = () => {
+		params.delete("brands");
+		params.delete("sizes");
+		params.delete("recommendedFor");
+		params.delete("search");
+		params.delete("category");
+		params.delete("page");
+		setSearchParams(params);
+	};
 
-      if (
-        selectedSizes.length > 0 &&
-        !product.sizes.some((size) => selectedSizes.includes(size))
-      ) {
-        return false;
-      }
+	const hasActiveFilters =
+		selectedBrands.length > 0 ||
+		selectedSizes.length > 0 ||
+		selectedRecommendedFor.length > 0 ||
+		!!searchTerm ||
+		!!categoryParam;
 
-      if (
-        selectedRecommendedFor.length > 0 &&
-        !selectedRecommendedFor.includes(product.recommendedFor)
-      ) {
-        return false;
-      }
+	const checkBoxColorScheme = "brand";
 
-      if (searchTerm) {
-        const name = product.name.toLowerCase();
-        const brand = product.brand.toLowerCase();
-        if (!name.includes(searchTerm) && !brand.includes(searchTerm)) {
-          return false;
-        }
-      }
+	const titleLabel = categoryParam
+		? categoryLabels[categoryParam.toLowerCase()] || categoryParam
+		: "Productos";
 
-      return true;
-    });
-  }, [
-    categoryParam,
-    selectedBrands,
-    selectedSizes,
-    selectedRecommendedFor,
-    searchTerm,
-  ]);
+	const filteredProducts = useMemo(() => {
+		return allProducts.filter((product) => {
+			// Filtrar por categoría
+			if (categoryParam) {
+				const categoryId = categoryMap[categoryParam.toLowerCase()];
+				if (categoryId && product.categoryId !== categoryId) return false;
+				// Si no hay categoryId mapeado, filtrar por nombre de categoría
+				if (
+					!categoryId &&
+					product.category?.name.toLowerCase() !== categoryParam.toLowerCase()
+				) {
+					return false;
+				}
+			}
 
-  const hasFilterParams =
-    !!searchParams.get("category") ||
-    !!searchParams.get("brands") ||
-    !!searchParams.get("sizes") ||
-    !!searchParams.get("recommendedFor") ||
-    !!searchParams.get("search");
+			// Filtrar por marca
+			if (selectedBrands.length > 0 && product.brand) {
+				if (!selectedBrands.includes(product.brand)) {
+					return false;
+				}
+			} else if (selectedBrands.length > 0 && !product.brand) {
+				return false;
+			}
 
-  const products = hasFilterParams ? filteredProducts : ALL_PRODUCTS;
-  const totalProducts = products.length;
+			// Filtrar por talle
+			if (selectedSizes.length > 0) {
+				if (
+					!product.sizes ||
+					!product.sizes.some((size) => selectedSizes.includes(size))
+				) {
+					return false;
+				}
+			}
 
-  return {
-    handleBrandChange,
-    handleSizeChange,
-    handleRecommendedForChange,
-    handleOrderByChange,
-    titleLabel,
-    selectedBrands,
-    selectedSizes,
-    selectedRecommendedFor,
-    products,
-    checkBoxColorScheme,
-    handleClearFilters,
-    hasActiveFilters,
-    orderBy,
-    totalProducts,
-  };
+			// Filtrar por género (recommendedFor)
+			if (selectedRecommendedFor.length > 0 && product.gender) {
+				if (!selectedRecommendedFor.includes(product.gender)) {
+					return false;
+				}
+			} else if (selectedRecommendedFor.length > 0 && !product.gender) {
+				return false;
+			}
+
+			// Filtrar por búsqueda
+			if (searchTerm) {
+				const name = product.name.toLowerCase();
+				const brand = (product.brand || "").toLowerCase();
+				if (!name.includes(searchTerm) && !brand.includes(searchTerm)) {
+					return false;
+				}
+			}
+
+			return true;
+		});
+	}, [
+		allProducts,
+		categoryParam,
+		categoryMap,
+		selectedBrands,
+		selectedSizes,
+		selectedRecommendedFor,
+		searchTerm,
+	]);
+
+	const hasFilterParams =
+		!!searchParams.get("category") ||
+		!!searchParams.get("brands") ||
+		!!searchParams.get("sizes") ||
+		!!searchParams.get("recommendedFor") ||
+		!!searchParams.get("search");
+
+	const products = hasFilterParams ? filteredProducts : allProducts;
+	const totalProducts = products.length;
+
+	return {
+		handleBrandChange,
+		handleSizeChange,
+		handleRecommendedForChange,
+		handleOrderByChange,
+		titleLabel,
+		selectedBrands,
+		selectedSizes,
+		selectedRecommendedFor,
+		products,
+		checkBoxColorScheme,
+		handleClearFilters,
+		hasActiveFilters,
+		orderBy,
+		totalProducts,
+		isLoading,
+		isError,
+		categoryLabels,
+		// Opciones dinámicas para filtros
+		brandOptions,
+		sizeOptions,
+	};
 };

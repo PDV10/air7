@@ -1,10 +1,9 @@
 import { useLocation, useSearchParams } from "react-router-dom";
-import type { ProductCategory } from "../../productos/types/product";
 
 type NavLink = {
   label: string;
   to: string;
-  category?: ProductCategory;
+  category?: string;
 };
 
 export const useNavbar = () => {
@@ -42,7 +41,7 @@ export const useNavbar = () => {
         return !link.category;
       }
 
-      return link.category === (categoryParam as ProductCategory);
+      return link.category === categoryParam;
     }
 
     return pathname === link.to;
