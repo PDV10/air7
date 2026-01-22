@@ -1,9 +1,7 @@
 // Servicio para llamadas de admin (POST/PUT/DELETE)
-// Las rutas pasan por el proxy de Vite que añade la API key
+// Las rutas pasan por el proxy (Vite en local, Vercel en prod) que añade la API key
 
 import type { Product, Category } from "../api/types";
-
-const ADMIN_API_BASE = "/api/admin";
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
 	if (!response.ok) {
@@ -22,35 +20,6 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
 	return response.json();
 };
 
-// POST genérico
-const adminPost = async <T>(endpoint: string, data: unknown): Promise<T> => {
-	const isFormData = data instanceof FormData;
-	const response = await fetch(`${ADMIN_API_BASE}${endpoint}`, {
-		method: "POST",
-		headers: isFormData ? {} : { "Content-Type": "application/json" },
-		body: isFormData ? data : JSON.stringify(data),
-	});
-	return handleResponse<T>(response);
-};
-
-// PUT genérico
-const adminPut = async <T>(endpoint: string, data: unknown): Promise<T> => {
-	const response = await fetch(`${ADMIN_API_BASE}${endpoint}`, {
-		method: "PUT",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(data),
-	});
-	return handleResponse<T>(response);
-};
-
-// DELETE genérico
-const adminDelete = async <T>(endpoint: string): Promise<T> => {
-	const response = await fetch(`${ADMIN_API_BASE}${endpoint}`, {
-		method: "DELETE",
-	});
-	return handleResponse<T>(response);
-};
-
 // ============ PRODUCTOS ============
 
 export interface ProductUpdateData {
@@ -66,17 +35,43 @@ export interface ProductUpdateData {
 	salePrice?: number | null;
 }
 
-export const createProduct = (data: FormData) =>
-	adminPost<Product>("/products", data);
+export const createProduct = async (data: FormData): Promise<Product> => {
+	const response = await fetch("/api/products", {
+		method: "POST",
+		body: data,
+	});
+	return handleResponse<Product>(response);
+};
 
-export const updateProduct = (id: number, data: ProductUpdateData) =>
-	adminPut<Product>(`/products/${id}`, data);
+export const updateProduct = async (
+	id: number,
+	data: ProductUpdateData,
+): Promise<Product> => {
+	const response = await fetch(`/api/products/${id}`, {
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(data),
+	});
+	return handleResponse<Product>(response);
+};
 
-export const updateProductWithImage = (id: number, data: FormData) =>
-	adminPost<Product>(`/products/${id}/image`, data);
+export const updateProductWithImage = async (
+	id: number,
+	data: FormData,
+): Promise<Product> => {
+	const response = await fetch(`/api/products/${id}/image`, {
+		method: "POST",
+		body: data,
+	});
+	return handleResponse<Product>(response);
+};
 
-export const deleteProduct = (id: number) =>
-	adminDelete<void>(`/products/${id}`);
+export const deleteProduct = async (id: number): Promise<void> => {
+	const response = await fetch(`/api/products/${id}`, {
+		method: "DELETE",
+	});
+	return handleResponse<void>(response);
+};
 
 // ============ CATEGORÍAS ============
 
@@ -85,11 +80,32 @@ export interface CategoryFormData {
 	description?: string;
 }
 
-export const createCategory = (data: CategoryFormData) =>
-	adminPost<Category>("/categories", data);
+export const createCategory = async (
+	data: CategoryFormData,
+): Promise<Category> => {
+	const response = await fetch("/api/categories", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(data),
+	});
+	return handleResponse<Category>(response);
+};
 
-export const updateCategory = (id: number, data: CategoryFormData) =>
-	adminPut<Category>(`/categories/${id}`, data);
+export const updateCategory = async (
+	id: number,
+	data: CategoryFormData,
+): Promise<Category> => {
+	const response = await fetch(`/api/categories/${id}`, {
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(data),
+	});
+	return handleResponse<Category>(response);
+};
 
-export const deleteCategory = (id: number) =>
-	adminDelete<void>(`/categories/${id}`);
+export const deleteCategory = async (id: number): Promise<void> => {
+	const response = await fetch(`/api/categories/${id}`, {
+		method: "DELETE",
+	});
+	return handleResponse<void>(response);
+};

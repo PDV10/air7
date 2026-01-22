@@ -1,9 +1,7 @@
-// Servicio para llamadas públicas (GET sin autenticación)
+// Servicio para llamadas públicas (GET)
+// Usan rutas relativas /api/... que pasan por el proxy en local y prod
 
 import type { Product, Category } from "../api/types";
-
-const API_BASE_URL =
-	import.meta.env.VITE_API_URL || "https://air7-api.onrender.com/api";
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
 	if (!response.ok) {
@@ -23,7 +21,7 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
 };
 
 export const apiGet = async <T>(endpoint: string): Promise<T> => {
-	const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+	const response = await fetch(`/api${endpoint}`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
