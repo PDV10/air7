@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import type { ReactNode } from "react";
+import { buildUrl } from "../../api/config";
 
 interface AdminGuardProps {
 	children: ReactNode;
@@ -18,7 +19,7 @@ export const loginAdmin = async (
 	password: string,
 ): Promise<{ success: boolean; error?: string }> => {
 	try {
-		const response = await fetch("/api/admin/login", {
+		const response = await fetch(buildUrl("/admin/login"), {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username, password }),
