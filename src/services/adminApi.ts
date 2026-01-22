@@ -1,6 +1,7 @@
 // Servicio para llamadas de admin (POST/PUT/DELETE)
 // Las rutas pasan por el proxy de Vite que añade la API key
 
+import { buildUrl } from "../api";
 import type { Product, Category } from "../api/types";
 
 const ADMIN_API_BASE = "/api/admin";
@@ -67,16 +68,16 @@ export interface ProductUpdateData {
 }
 
 export const createProduct = (data: FormData) =>
-	adminPost<Product>("/products", data);
+	adminPost<Product>(buildUrl("/products"), data);
 
 export const updateProduct = (id: number, data: ProductUpdateData) =>
-	adminPut<Product>(`/products/${id}`, data);
+	adminPut<Product>(buildUrl(`/products/${id}`), data);
 
 export const updateProductWithImage = (id: number, data: FormData) =>
-	adminPost<Product>(`/products/${id}/image`, data);
+	adminPost<Product>(buildUrl(`/products/${id}/image`), data);
 
 export const deleteProduct = (id: number) =>
-	adminDelete<void>(`/products/${id}`);
+	adminDelete<void>(buildUrl(`/products/${id}`));
 
 // ============ CATEGORÍAS ============
 
@@ -86,10 +87,10 @@ export interface CategoryFormData {
 }
 
 export const createCategory = (data: CategoryFormData) =>
-	adminPost<Category>("/categories", data);
+	adminPost<Category>(buildUrl("/categories"), data);
 
 export const updateCategory = (id: number, data: CategoryFormData) =>
-	adminPut<Category>(`/categories/${id}`, data);
+	adminPut<Category>(buildUrl(`/categories/${id}`), data);
 
 export const deleteCategory = (id: number) =>
-	adminDelete<void>(`/categories/${id}`);
+	adminDelete<void>(buildUrl(`/categories/${id}`));
