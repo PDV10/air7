@@ -36,17 +36,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 		"Content-Type": "application/json",
 	};
 
-	// Añadir API key (server-side, no expuesta al cliente)
+	// Añadir Authorization con API key (server-side, no expuesta al cliente)
 	if (API_KEY) {
-		headers["x-api-key"] = API_KEY;
-	}
-
-	// Reenviar header Authorization del cliente (JWT token)
-	const authHeader = req.headers["authorization"];
-	if (authHeader) {
-		headers["Authorization"] = Array.isArray(authHeader)
-			? authHeader[0]
-			: authHeader;
+		headers["Authorization"] = `Bearer ${API_KEY}`;
 	}
 
 	try {
