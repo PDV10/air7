@@ -1,11 +1,10 @@
-import { buildUrl, defaultHeaders } from "./config";
+import { buildUrl } from "./config";
 import type { Category, Product } from "./types";
 
 // GET /api/categories - Obtener todas las categorías
 export const getCategories = async (): Promise<Category[]> => {
 	const response = await fetch(buildUrl("/categories"), {
 		method: "GET",
-		headers: defaultHeaders,
 	});
 
 	if (!response.ok) {
@@ -19,7 +18,6 @@ export const getCategories = async (): Promise<Category[]> => {
 export const getCategoryById = async (id: number): Promise<Category> => {
 	const response = await fetch(buildUrl(`/categories/${id}`), {
 		method: "GET",
-		headers: defaultHeaders,
 	});
 
 	if (!response.ok) {
@@ -36,7 +34,6 @@ export const getCategoryById = async (id: number): Promise<Category> => {
 export const getProductsByCategory = async (id: number): Promise<Product[]> => {
 	const response = await fetch(buildUrl(`/categories/${id}/products`), {
 		method: "GET",
-		headers: defaultHeaders,
 	});
 
 	if (!response.ok) {

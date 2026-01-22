@@ -1,11 +1,10 @@
-import { buildUrl, defaultHeaders } from "./config";
+import { buildUrl } from "./config";
 import type { Product } from "./types";
 
 // GET /api/products - Obtener todos los productos
 export const getProducts = async (): Promise<Product[]> => {
 	const response = await fetch(buildUrl("/products"), {
 		method: "GET",
-		headers: defaultHeaders,
 	});
 
 	if (!response.ok) {
@@ -19,7 +18,6 @@ export const getProducts = async (): Promise<Product[]> => {
 export const getProductById = async (id: number): Promise<Product> => {
 	const response = await fetch(buildUrl(`/products/${id}`), {
 		method: "GET",
-		headers: defaultHeaders,
 	});
 
 	if (!response.ok) {

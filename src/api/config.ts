@@ -1,12 +1,15 @@
-// Configuración de la API
-// Usar rutas relativas /api/... para que funcione igual en local y prod
+// Configuración de la API - Conexión directa a Render
 
-// Headers por defecto para las peticiones
-export const defaultHeaders: HeadersInit = {
-	"Content-Type": "application/json",
+// URL base de la API (sin proxy)
+export const API_BASE_URL =
+	import.meta.env.VITE_API_URL || "https://air7-api.onrender.com/api";
+
+// Helper para construir URLs completas
+export const buildUrl = (endpoint: string): string => {
+	return `${API_BASE_URL}${endpoint}`;
 };
 
-// Helper para construir URLs relativas
-export const buildUrl = (endpoint: string): string => {
-	return `/api${endpoint}`;
+// API Key para admin (POST/PUT/DELETE)
+export const getApiKey = (): string => {
+	return import.meta.env.VITE_AIR7_API_KEY || "";
 };

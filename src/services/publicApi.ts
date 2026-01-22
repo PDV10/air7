@@ -1,7 +1,8 @@
 // Servicio para llamadas públicas (GET)
-// Usan rutas relativas /api/... que pasan por el proxy en local y prod
+// Conexión directa a Render - sin proxy
 
 import type { Product, Category } from "../api/types";
+import { buildUrl } from "../api/config";
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
 	if (!response.ok) {
@@ -21,11 +22,8 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
 };
 
 export const apiGet = async <T>(endpoint: string): Promise<T> => {
-	const response = await fetch(`/api${endpoint}`, {
+	const response = await fetch(buildUrl(endpoint), {
 		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-		},
 	});
 	return handleResponse<T>(response);
 };

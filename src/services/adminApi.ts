@@ -1,7 +1,16 @@
 // Servicio para llamadas de admin (POST/PUT/DELETE)
-// Las rutas pasan por el proxy (Vite en local, Vercel en prod) que añade la API key
+// Conexión directa a Render con Authorization header
 
 import type { Product, Category } from "../api/types";
+import { buildUrl, getApiKey } from "../api/config";
+
+// Headers de autorización para admin
+const getAuthHeaders = (): HeadersInit => {
+	const apiKey = getApiKey();
+	return {
+		Authorization: `Bearer ${apiKey}`,
+	};
+};
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
 	if (!response.ok) {
@@ -36,8 +45,10 @@ export interface ProductUpdateData {
 }
 
 export const createProduct = async (data: FormData): Promise<Product> => {
-	const response = await fetch("/api/products", {
+	// NO setear Content-Type para FormData - el browser agrega boundary automáticamente
+	const response = await fetch(buildUrl("/products"), {
 		method: "POST",
+		headers: getAuthHeaders(),
 		body: data,
 	});
 	return handleResponse<Product>(response);
@@ -47,9 +58,12 @@ export const updateProduct = async (
 	id: number,
 	data: ProductUpdateData,
 ): Promise<Product> => {
-	const response = await fetch(`/api/products/${id}`, {
+	const response = await fetch(buildUrl(`/products/${id}`), {
 		method: "PUT",
-		headers: { "Content-Type": "application/json" },
+		headers: {
+			...getAuthHeaders(),
+			"Content-Type": "application/json",
+		},
 		body: JSON.stringify(data),
 	});
 	return handleResponse<Product>(response);
@@ -59,16 +73,19 @@ export const updateProductWithImage = async (
 	id: number,
 	data: FormData,
 ): Promise<Product> => {
-	const response = await fetch(`/api/products/${id}/image`, {
+	// NO setear Content-Type para FormData
+	const response = await fetch(buildUrl(`/products/${id}/image`), {
 		method: "POST",
+		headers: getAuthHeaders(),
 		body: data,
 	});
 	return handleResponse<Product>(response);
 };
 
 export const deleteProduct = async (id: number): Promise<void> => {
-	const response = await fetch(`/api/products/${id}`, {
+	const response = await fetch(buildUrl(`/products/${id}`), {
 		method: "DELETE",
+		headers: getAuthHeaders(),
 	});
 	return handleResponse<void>(response);
 };
@@ -83,9 +100,12 @@ export interface CategoryFormData {
 export const createCategory = async (
 	data: CategoryFormData,
 ): Promise<Category> => {
-	const response = await fetch("/api/categories", {
+	const response = await fetch(buildUrl("/categories"), {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
+		headers: {
+			...getAuthHeaders(),
+			"Content-Type": "application/json",
+		},
 		body: JSON.stringify(data),
 	});
 	return handleResponse<Category>(response);
@@ -95,17 +115,21 @@ export const updateCategory = async (
 	id: number,
 	data: CategoryFormData,
 ): Promise<Category> => {
-	const response = await fetch(`/api/categories/${id}`, {
+	const response = await fetch(buildUrl(`/categories/${id}`), {
 		method: "PUT",
-		headers: { "Content-Type": "application/json" },
+		headers: {
+			...getAuthHeaders(),
+			"Content-Type": "application/json",
+		},
 		body: JSON.stringify(data),
 	});
 	return handleResponse<Category>(response);
 };
 
 export const deleteCategory = async (id: number): Promise<void> => {
-	const response = await fetch(`/api/categories/${id}`, {
+	const response = await fetch(buildUrl(`/categories/${id}`), {
 		method: "DELETE",
+		headers: getAuthHeaders(),
 	});
 	return handleResponse<void>(response);
 };
