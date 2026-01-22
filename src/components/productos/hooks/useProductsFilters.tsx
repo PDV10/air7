@@ -130,17 +130,22 @@ export const useProductsFilters = () => {
 
 	const checkBoxColorScheme = "brand";
 
-	const titleLabel = categoryParam
-		? categoryLabels[categoryParam.toLowerCase()] || categoryParam
-		: "Productos";
+	const isOfertasFilter = categoryParam?.toLowerCase() === "ofertas";
+
+	const titleLabel = isOfertasFilter
+		? "Ofertas"
+		: categoryParam
+			? categoryLabels[categoryParam.toLowerCase()] || categoryParam
+			: "Productos";
 
 	const filteredProducts = useMemo(() => {
 		return allProducts.filter((product) => {
-			// Filtrar por categoría
-			if (categoryParam) {
+			if (isOfertasFilter) {
+				if (!product.isOnSale) return false;
+			} else if (categoryParam) {
 				const categoryId = categoryMap[categoryParam.toLowerCase()];
 				if (categoryId && product.categoryId !== categoryId) return false;
-				// Si no hay categoryId mapeado, filtrar por nombre de categoría
+
 				if (
 					!categoryId &&
 					product.category?.name.toLowerCase() !== categoryParam.toLowerCase()
@@ -149,7 +154,6 @@ export const useProductsFilters = () => {
 				}
 			}
 
-			// Filtrar por marca
 			if (selectedBrands.length > 0 && product.brand) {
 				if (!selectedBrands.includes(product.brand)) {
 					return false;
@@ -158,7 +162,6 @@ export const useProductsFilters = () => {
 				return false;
 			}
 
-			// Filtrar por talle
 			if (selectedSizes.length > 0) {
 				if (
 					!product.sizes ||
@@ -168,7 +171,6 @@ export const useProductsFilters = () => {
 				}
 			}
 
-			// Filtrar por género (recommendedFor)
 			if (selectedRecommendedFor.length > 0 && product.gender) {
 				if (!selectedRecommendedFor.includes(product.gender)) {
 					return false;
@@ -177,7 +179,6 @@ export const useProductsFilters = () => {
 				return false;
 			}
 
-			// Filtrar por búsqueda
 			if (searchTerm) {
 				const name = product.name.toLowerCase();
 				const brand = (product.brand || "").toLowerCase();
@@ -196,6 +197,7 @@ export const useProductsFilters = () => {
 		selectedSizes,
 		selectedRecommendedFor,
 		searchTerm,
+		isOfertasFilter,
 	]);
 
 	const hasFilterParams =

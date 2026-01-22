@@ -20,6 +20,8 @@ export interface Product {
 	categoryId: number | null;
 	gender: string | null;
 	sizes: string[];
+	isOnSale: boolean;
+	salePrice: string | null;
 	createdAt: string;
 	updatedAt: string;
 	category: Category | null;
