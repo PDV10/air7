@@ -1,7 +1,6 @@
 // Servicio para llamadas de admin (POST/PUT/DELETE)
 // Las rutas pasan por el proxy de Vite que añade la API key
 
-import { buildUrl } from "../api";
 import type { Product, Category } from "../api/types";
 
 const ADMIN_API_BASE = "/api/admin";
