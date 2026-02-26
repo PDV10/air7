@@ -32,19 +32,19 @@ export const NAV_LINKS: {
 		to: "/productos",
 	},
 	{
-		label: "Ofertas",
+		label: "Basquet",
 		to: "/productos",
-		category: "ofertas",
+		category: "basquet",
 	},
 	{
-		label: "Deporte",
+		label: "Urbano",
 		to: "/productos",
-		category: "deporte",
+		category: "urbano",
 	},
 	{
-		label: "Moda",
+		label: "Accesorios",
 		to: "/productos",
-		category: "moda",
+		category: "accesorios",
 	},
 	{ label: "Nosotros", to: "/nosotros" },
 ];
